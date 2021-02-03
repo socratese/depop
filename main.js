@@ -10,15 +10,16 @@ let account = {
 }
 
 const params = {
-    "what":"nike offwhite",
+    "what":"yeezy",
     "country":"gb",
     "offset_id":"MnwyNHwxNjEyMjY4NjU1",
-    "limit":"3"
+    "limit":"10"
 }
 
-const priceFilter = {
-    "min":"0",
-    "max":"170"
+const Filter = {
+    "min":"10",
+    "max":"400",
+    "condition":"new"
 }
 
 const url = `https://webapi.depop.com/api/v1/search/?what=${params.what}&country=${params.country}&offset_id=${params.offset_id}&limit=${params.limit}`
@@ -26,10 +27,11 @@ const url = `https://webapi.depop.com/api/v1/search/?what=${params.what}&country
 axios.get(url).then(response => {
     response.data.products.forEach(function(item){
         const ITEM_PRICE = (item.price.price_amount)
-        if (ITEM_PRICE > priceFilter.min && ITEM_PRICE < priceFilter.max) {
-            validITEMS.push(item)
+        if (ITEM_PRICE > Filter.min && ITEM_PRICE < Filter.max) {
+            
             
             let product = {
+                msg: 'NEW ITEM ADDED TO CART',
                 link: `https://www.depop.com/products/${item.slug}`,
                 title: item.slug,
                 time: Date.now(),
@@ -37,7 +39,8 @@ axios.get(url).then(response => {
                 status: item.status
             }
   
-            console.log(product)
+            validITEMS.push(product)
+            console.log(validITEMS)
         }
     })
 })
